@@ -1,0 +1,45 @@
+﻿@model IEnumerable<FarmaciaWeb.Models.Medicamento>
+@{
+    ViewData["Title"] = "Inventario Completo";
+}
+
+<h2 class="mb-4">Reporte de Inventario Completo</h2>
+
+<a asp-action="Index" class="btn btn-secondary mb-3">Volver al Dashboard</a>
+
+<table class="table table-bordered table-hover">
+    <thead class="table-primary">
+        <tr>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Fecha Vencimiento</th>
+            <th>Categoría</th>
+            <th>Estante</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Nombre</td>
+                <td>@item.Precio.ToString("C")</td>
+                <td>@item.Stock</td>
+                <td>@item.FechaVencimiento.ToString("dd/MM/yyyy")</td>
+                <td>@item.Categoria?.Nombre</td>
+                <td>@item.Estante?.Nombre</td>
+                <td>
+                    @if (item.Estado)
+                    {
+                        <span class="badge bg-success">Activo</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Inactivo</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

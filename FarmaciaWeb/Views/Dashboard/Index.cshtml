@@ -69,4 +69,27 @@
             </div>
         </div>
     </div>
+    <h4 class="mt-5 mb-3">Reportes</h4>
+    <div class="row g-3">
+        <div class="col-md-3">
+            <a asp-action="ReporteMedicamentosVencidos" class="btn btn-danger w-100">
+                Medicamentos Vencidos
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a asp-action="ReportePorVencer" class="btn btn-warning w-100">
+                Por Vencer (30 días)
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a asp-action="ReporteInventario" class="btn btn-primary w-100">
+                Inventario Completo
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a asp-action="ReporteBajoStock" class="btn btn-secondary w-100">
+                Bajo Stock
+            </a>
+        </div>
+    </div>
 </div>

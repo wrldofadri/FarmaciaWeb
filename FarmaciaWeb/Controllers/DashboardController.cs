@@ -40,5 +40,45 @@ namespace FarmaciaWeb.Controllers
 
             return View();
         }
+        public async Task<IActionResult> ReporteMedicamentosVencidos()
+        {
+            var hoy = DateTime.Today;
+            var medicamentos = await _context.Medicamentos
+                .Include(m => m.Categoria)
+                .Include(m => m.Estante)
+                .Where(m => m.FechaVencimiento < hoy)
+                .ToListAsync();
+            return View(medicamentos);
+        }
+
+        public async Task<IActionResult> ReportePorVencer()
+        {
+            var hoy = DateTime.Today;
+            var medicamentos = await _context.Medicamentos
+                .Include(m => m.Categoria)
+                .Include(m => m.Estante)
+                .Where(m => m.FechaVencimiento >= hoy && m.FechaVencimiento <= hoy.AddDays(30))
+                .ToListAsync();
+            return View(medicamentos);
+        }
+
+        public async Task<IActionResult> ReporteInventario()
+        {
+            var medicamentos = await _context.Medicamentos
+                .Include(m => m.Categoria)
+                .Include(m => m.Estante)
+                .ToListAsync();
+            return View(medicamentos);
+        }
+
+        public async Task<IActionResult> ReporteBajoStock()
+        {
+            var medicamentos = await _context.Medicamentos
+                .Include(m => m.Categoria)
+                .Include(m => m.Estante)
+                .Where(m => m.Stock < 10)
+                .ToListAsync();
+            return View(medicamentos);
+        }
     }
 }
