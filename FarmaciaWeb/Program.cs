@@ -25,20 +25,27 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
+    // Crear roles
     string[] roles = { "Administrador", "Farmaceutico", "Cliente" };
     foreach (var rol in roles)
     {
         if (!await roleManager.RoleExistsAsync(rol))
             await roleManager.CreateAsync(new IdentityRole(rol));
     }
-}
 
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
-}
+    string adminEmail = "admin@gmail.com";
+    string adminPassword = "Admin2026!";
 
+    var adminUser = await userManager.FindByEmailAsync(adminEmail);
+    if (adminUser == null)
+    {
+        adminUser = new IdentityUser { UserName = adminEmail, Email = adminEmail };
+        await userManager.CreateAsync(adminUser, adminPassword);
+        await userManager.AddToRoleAsync(adminUser, "Administrador");
+    }
+}
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
