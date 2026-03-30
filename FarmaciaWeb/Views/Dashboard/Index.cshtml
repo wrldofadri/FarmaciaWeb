@@ -1,0 +1,72 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h2 class="mb-4">Panel de Control</h2>
+
+<div class="row g-3">
+    <div class="col-md-4">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h5 class="card-title">Total Medicamentos</h5>
+                <h2>@ViewBag.TotalMedicamentos</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5 class="card-title">Total Categorías</h5>
+                <h2>@ViewBag.TotalCategorias</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <h5 class="card-title">Total Estantes</h5>
+                <h2>@ViewBag.TotalEstantes</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-danger">
+            <div class="card-body">
+                <h5 class="card-title">Medicamentos Vencidos</h5>
+                <h2>@ViewBag.Vencidos</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <h5 class="card-title">Por Vencer (30 días)</h5>
+                <h2>@ViewBag.PorVencer30</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <h5 class="card-title">Por Vencer (60 días)</h5>
+                <h2>@ViewBag.PorVencer60</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <h5 class="card-title">Por Vencer (90 días)</h5>
+                <h2>@ViewBag.PorVencer90</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-secondary">
+            <div class="card-body">
+                <h5 class="card-title">Bajo Stock</h5>
+                <h2>@ViewBag.BajoStock</h2>
+            </div>
+        </div>
+    </div>
+</div>
