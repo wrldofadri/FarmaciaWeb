@@ -1,77 +1,75 @@
 ﻿@model IEnumerable<FarmaciaWeb.Models.Medicamento>
-
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Medicamentos";
 }
 
-<h1>Index</h1>
+<h2 class="mb-4">Medicamentos</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
+<a asp-action="Create" class="btn btn-primary mb-3">Nuevo Medicamento</a>
+
+<table class="table table-bordered table-hover">
+    <thead class="table-dark">
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nombre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Precio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Stock)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaVencimiento)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Descripcion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Estado)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Categoria)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Estante)
-            </th>
-            <th></th>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Vencimiento</th>
+            <th>Categoría</th>
+            <th>Estante</th>
+            <th>Estado</th>
+            <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Precio)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Stock)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaVencimiento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Descripcion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Estado)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Categoria.Nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Estante.Nombre)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            var hoy = DateTime.Today;
+            var rowClass = "";
+            var etiqueta = "";
+
+            if (item.FechaVencimiento < hoy)
+            {
+                rowClass = "table-danger";
+                etiqueta = "Vencido";
+            }
+            else if (item.FechaVencimiento <= hoy.AddDays(30))
+            {
+                rowClass = "table-warning";
+                etiqueta = "Por vencer";
+            }
+            else if (item.Stock < 10)
+            {
+                rowClass = "table-info";
+                etiqueta = "Bajo stock";
+            }
+
+            <tr class="@rowClass">
+                <td>@item.Nombre</td>
+                <td>@item.Precio.ToString("C")</td>
+                <td>@item.Stock</td>
+                <td>@item.FechaVencimiento.ToString("dd/MM/yyyy")</td>
+                <td>@item.Categoria?.Nombre</td>
+                <td>@item.Estante?.Nombre</td>
+                <td>
+                    @if (item.Estado)
+                    {
+                        <span class="badge bg-success">Activo</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Inactivo</span>
+                    }
+                    @if (!string.IsNullOrEmpty(etiqueta))
+                    {
+                        <span class="badge bg-dark ms-1">@etiqueta</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Editar</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Detalles</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Eliminar</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
