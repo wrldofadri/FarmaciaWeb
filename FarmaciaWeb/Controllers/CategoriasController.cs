@@ -63,7 +63,9 @@ namespace FarmaciaWeb.Controllers
                 _context.Add(categoria);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+
             }
+            TempData["Mensaje"] = "Categoría creada correctamente";
             return View(categoria);
         }
 

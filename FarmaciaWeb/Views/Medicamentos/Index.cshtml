@@ -6,7 +6,36 @@
 <h2 class="mb-4">Medicamentos</h2>
 
 <a asp-action="Create" class="btn btn-primary mb-3">Nuevo Medicamento</a>
-
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-4">
+        <input type="text" name="buscar" value="@ViewBag.Buscar" class="form-control" placeholder="Buscar por nombre..." />
+    </div>
+    <div class="col-md-3">
+        <select name="categoriaId" class="form-select">
+            <option value="">-- Todas las categorías --</option>
+            @foreach (var cat in ViewBag.Categorias)
+            {
+                <option value="@cat.Id" selected="@(ViewBag.CategoriaId == cat.Id)">@cat.Nombre</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-3">
+        <select name="estanteId" class="form-select">
+            <option value="">-- Todos los estantes --</option>
+            @foreach (var est in ViewBag.Estantes)
+            {
+                <option value="@est.Id" selected="@(ViewBag.EstanteId == est.Id)">@est.Nombre</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+    </div>
+</form>
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success">@TempData["Mensaje"]</div>
+}
 <table class="table table-bordered table-hover">
     <thead class="table-dark">
         <tr>
@@ -67,7 +96,7 @@
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Editar</a>
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Detalles</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Eliminar</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger" onclick="return confirm('¿Está seguro de eliminar este medicamento?')">Eliminar</a>
                 </td>
             </tr>
         }

@@ -22,10 +22,29 @@ namespace FarmaciaWeb.Controllers
         }
 
         // GET: Medicamentos
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string buscar, int? categoriaId, int? estanteId)
         {
-            var applicationDbContext = _context.Medicamentos.Include(m => m.Categoria).Include(m => m.Estante);
-            return View(await applicationDbContext.ToListAsync());
+            var medicamentos = _context.Medicamentos
+                .Include(m => m.Categoria)
+                .Include(m => m.Estante)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(buscar))
+                medicamentos = medicamentos.Where(m => m.Nombre.Contains(buscar));
+
+            if (categoriaId.HasValue)
+                medicamentos = medicamentos.Where(m => m.CategoriaId == categoriaId);
+
+            if (estanteId.HasValue)
+                medicamentos = medicamentos.Where(m => m.EstanteId == estanteId);
+
+            ViewBag.Categorias = await _context.Categorias.ToListAsync();
+            ViewBag.Estantes = await _context.Estantes.ToListAsync();
+            ViewBag.Buscar = buscar;
+            ViewBag.CategoriaId = categoriaId;
+            ViewBag.EstanteId = estanteId;
+
+            return View(await medicamentos.ToListAsync());
         }
 
         // GET: Medicamentos/Details/5
@@ -53,6 +72,7 @@ namespace FarmaciaWeb.Controllers
         {
             ViewData["CategoriaId"] = new SelectList(_context.Categorias, "Id", "Nombre");
             ViewData["EstanteId"] = new SelectList(_context.Estantes, "Id", "Nombre");
+            TempData["Mensaje"] = "Medicamento creado correctamente";
             return View();
         }
 
